@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('api', __name__, template_folder='templates')
 
-from app.api import users, errors, tokens, passwords, views
+from app.api import users, tokens, passwords, views
