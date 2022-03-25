@@ -5,6 +5,7 @@ from app.models import User
 from app.api import bp
 from app.api.errors import bad_request, error_response
 from app.api.auth import token_auth
+from app.api.email import send_password_reset_email
 
 import logging
 logger = logging.getLogger(__name__)
