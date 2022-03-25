@@ -1,0 +1,38 @@
+<!doctype html>
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<title>
+	{% if config['title'] %}
+		{{ config['title'] }}
+	{% else %}
+		API
+	{% endif %}
+	</title>
+</head>
+
+<body>
+	{% block body %}
+	{% endblock %}
+	<!-- JavaScript libraries -->
+	<!-- jQuery, Popper, & Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+	<!-- Notify -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- Display flashed messages from server -->
+	<script>
+	document.body.onload = function() {
+		let messages = {{ get_flashed_messages(with_categories=true)|tojson|safe }}
+		// display flashed messages
+		for (var i = 0; i < messages.length; i++) {
+			$.notify(messages[i][1], messages[i][0]);
+		}
+	};
+	</script>
+</body>
