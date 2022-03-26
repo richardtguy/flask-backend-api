@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
+APP_NAME = os.environ.get('APP_NAME') or 'Flask API'
+
 # Flask application configuration
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY') or 'itsasecret'
 

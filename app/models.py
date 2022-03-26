@@ -68,6 +68,26 @@ class User(db.Model):
         return data
 
     def from_dict(self, data, new_user=False):
+        # validate arguments
+        errors = []
+        for field in ['username', 'email']:
+            if field not in data: errors.append(field)
+        if new_user and 'password' not in data:
+            errors.append('password')
+        if errors:
+            raise TypeError(f'missing {", ".join(errors)}')
+        # if new user, check for duplicate username or email
+        if ((new_user) and (users := q.all())):
+            q = User.query.filter(
+                (User.username == data['username']) |
+                (User.email == data['email'])
+            )
+            duplicates = []
+            for u in users:
+                if u.username == data['username']: duplicates.append('username')
+                if u.email == data['email']: duplicates.append('email')
+            raise TypeError(f'please try a different {" and ".join(duplicates)}')
+        # set attributes
         for field in ['username', 'email']:
             if field in data:
                 setattr(self, field, data[field])

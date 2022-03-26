@@ -25,5 +25,7 @@ def create_app():
 	# register blueprints
 	from app.api import bp as api_bp
 	app.register_blueprint(api_bp, url_prefix='/api')
+	from app.password_reset import bp as pw_reset_bp
+	app.register_blueprint(pw_reset_bp)
 
 	return app
