@@ -77,11 +77,11 @@ class User(db.Model):
         if errors:
             raise TypeError(f'missing {", ".join(errors)}')
         # if new user, check for duplicate username or email
+        q = User.query.filter(
+            (User.username == data['username']) |
+            (User.email == data['email'])
+        )
         if ((new_user) and (users := q.all())):
-            q = User.query.filter(
-                (User.username == data['username']) |
-                (User.email == data['email'])
-            )
             duplicates = []
             for u in users:
                 if u.username == data['username']: duplicates.append('username')

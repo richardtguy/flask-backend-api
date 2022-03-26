@@ -21,7 +21,7 @@ def reset_password():
 	user = User.query.filter_by(username=u).first()
 	if user is None:
 		# user not found
-		error_response(404)
+		return error_response(404)
 	if authenticated_user is None:
 		# request for password reset
 		send_password_reset_email(user)
