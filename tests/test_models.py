@@ -1,30 +1,16 @@
 import unittest
 from datetime import datetime
 import json
+from base64 import b64encode
 
-import flask
 import jwt
 
 from app import create_app, db
 from app.models import User
-from app.api.errors import bad_request
-
 from app.config import Config
 
-class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-
-class BaseTest(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app(TestConfig)
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+from .base import TestConfig
+from .base import BaseTest
 
 class UserModelCase(BaseTest):
     def setUp(self):
@@ -76,7 +62,8 @@ class UserModelCase(BaseTest):
         }, new_user=True)
         db.session.add(u)
         db.session.commit()
-        self.assertTrue(User.query.get(u.id).id==u.id)
+        self.assertTrue(User.query.get(u.id))
+        self.assertTrue(User.query.get(u.id).password_hash is not None)
         u = User()
         self.assertRaises(TypeError, u.from_dict, {}, new_user=True)
         self.assertRaises(TypeError, u.from_dict, {
@@ -84,16 +71,3 @@ class UserModelCase(BaseTest):
             "email": "user3@example.com",
             "password": "password"
         }, new_user=True)
-
-class ErrorHandlersCase(BaseTest):
-    def test_bad_request(self):
-        message = 'message'
-        response = bad_request(message)
-        self.assertTrue(type(response)==flask.wrappers.Response)
-        self.assertTrue(response.status_code==400)
-        data = json.loads(response.get_data(as_text=True))
-        self.assertTrue(data['message']==message)
-        self.assertTrue(data['error']=='Bad Request')
-
-if __name__ == '__main__':
-    unittest.main(verbosity=3)
