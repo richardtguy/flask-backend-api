@@ -148,7 +148,7 @@ curl -X PUT 'http://example.com/api/passwords?u=user'
 ```
 
 #### Example response
-```json
+```
 None
 ```
 
@@ -162,6 +162,6 @@ curl -X PUT 'http://example.com/api/passwords?u=user' \
 ```
 
 #### Example response
-```json
+```
 None
 ```
