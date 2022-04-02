@@ -24,6 +24,7 @@ def reset_password():
 		return error_response(404)
 	if authenticated_user is None:
 		# request for password reset
+		# TODO: move to background process queue
 		send_password_reset_email(user)
 		return '', 202
 	elif authenticated_user is user:

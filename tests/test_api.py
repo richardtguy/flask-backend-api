@@ -50,7 +50,18 @@ class TokensCase(UserFixture, BaseTest):
         self.assertTrue(r.status_code==401)
 
     def test_revoke_token(self):
-        pass
+        r = self.c.get(f'/api/users/{self.u.id}', headers={
+            "Authorization": "Bearer " + self.token
+        })
+        self.assertTrue(r.status_code==200)
+        r = self.c.delete(f'/api/tokens', headers={
+            "Authorization": "Bearer " + self.token
+        })
+        self.assertTrue(r.status_code==204)
+        r = self.c.get(f'/api/users/{self.u.id}', headers={
+            "Authorization": "Bearer " + self.token
+        })
+        self.assertTrue(r.status_code==401)
 
 class UsersCase(UserFixture, BaseTest):
     def test_get_user_by_username(self):
@@ -76,11 +87,11 @@ class UsersCase(UserFixture, BaseTest):
         self.assertTrue(r.json==self.u.to_dict())
 
     def test_create_user(self):
-        pass
+        raise NotImplementedError
 
 class PasswordsCase(UserFixture, BaseTest):
     def test_reset_password(self):
-        pass
+        raise NotImplementedError
 
 class ErrorHandlersCase(BaseTest):
     def test_bad_request(self):
